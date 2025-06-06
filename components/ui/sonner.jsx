@@ -1,11 +1,9 @@
 "use client"
 
 import { useTheme } from "next-themes"
-import { Toaster as Sonner } from "sonner";
+import { Toaster as Sonner, ToasterProps } from "sonner"
 
-const Toaster = ({
-  ...props
-}) => {
+const Toaster = ({ ...props }) => {
   const { theme = "system" } = useTheme()
 
   return (
@@ -17,10 +15,9 @@ const Toaster = ({
         {
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)"
-        }
+          "--normal-border": "var(--border)",
+        } 
       }
-
       {...props} />)
   );
 }
