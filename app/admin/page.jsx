@@ -1,5 +1,5 @@
-import AdminPage from "./AdminPage";
+import AdminDashboard from "./AdminPage";
 
 export default function Page() {
-  return <AdminPage />;
+  return <AdminDashboard />;
 }
