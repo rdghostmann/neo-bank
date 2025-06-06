@@ -7,7 +7,8 @@ const Toaster = ({ ...props }) => {
   const { theme = "system" } = useTheme()
 
   return (
-    <Sonner
+
+    (<Sonner
       theme={theme}
       className="toaster group"
       style={
@@ -17,9 +18,8 @@ const Toaster = ({ ...props }) => {
           "--normal-border": "var(--border)",
         } 
       }
-      {...props}
-    />
-  )
+      {...props} />)
+  );
 }
 
 export { Toaster }
