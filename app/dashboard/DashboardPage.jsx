@@ -19,9 +19,10 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react"
-import { CustomerLayout } from "@/components/customer-layout"
+// import { CustomerLayout } from "@/components/customer-layout"
 
 import { LogoutButton } from '@/components/Logout-button/logout-button';
+import { CustomerLayout } from "@/components/CustomerLayout/CustomerLayout"
 
 const transactions = [
   {

@@ -14,7 +14,7 @@ import {
   Smartphone,
   Download,
 } from "lucide-react"
-import { Layout } from "@/components/layout"
+import { Layout } from "@/components/DashboardLayout/DashboardLayout"
 
 const monthlyData = [
   { month: "Jan", income: 4500, expenses: 3200 },

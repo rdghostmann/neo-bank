@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User, Bell, Shield, CreditCard, Lock, Eye, Camera } from "lucide-react"
-import { Layout } from "@/components/layout"
+import { Layout } from "@/components/DashboardLayout/DashboardLayout"
 
 export default function SettingsPage() {
   const [notifications, setNotifications] = useState({
