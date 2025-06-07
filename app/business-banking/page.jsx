@@ -102,7 +102,7 @@ export default function BusinessBankingPage() {
               financial infrastructure to scale your success.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/login">
+              <Link href="/sign-in">
                 <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-6 text-lg">
                   Start Banking
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -216,7 +216,7 @@ export default function BusinessBankingPage() {
               Join thousands of businesses that trust NeoBank for their financial needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/login">
+              <Link href="/sign-in">
                 <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-12 py-6 text-lg">
                   Open Business Account
                   <ArrowRight className="w-5 h-5 ml-2" />
