@@ -7,7 +7,7 @@ export async function middleware(req) {
 
   // Allow public paths
   if (
-    pathname.startsWith("/api") ||
+    // pathname.startsWith("/api") ||
     pathname.startsWith("/sign-in") ||
     pathname === "/"
   ) {
