@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Camera, Phone, Mail, CheckCircle, Upload, User, FileText, Shield } from "lucide-react"
-import { Layout } from "@/components/layout"
+import { Layout } from "@/components/DashboardLayout/DashboardLayout"
 
 const steps = [
   { id: 1, title: "Personal Info", icon: User, completed: false },
@@ -20,7 +20,7 @@ const steps = [
 
 export default function KYCVerification() {
   const [currentStep, setCurrentStep] = useState(1)
-  const [completedSteps, setCompletedSteps] = useState<number[]>([])
+  const [completedSteps, setCompletedSteps] = useState([])
   const [phoneCode, setPhoneCode] = useState("")
   const [emailCode, setEmailCode] = useState("")
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -28,7 +28,7 @@ export default function KYCVerification() {
 
   const progress = (completedSteps.length / steps.length) * 100
 
-  const completeStep = (stepId: number) => {
+  const completeStep = (stepId) => {
     if (!completedSteps.includes(stepId)) {
       setCompletedSteps([...completedSteps, stepId])
     }

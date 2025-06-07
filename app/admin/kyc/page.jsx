@@ -77,7 +77,7 @@ export default function AdminKYCPage() {
     return matchesStatus && matchesSearch
   })
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case "pending":
         return "bg-yellow-100 text-yellow-800"
@@ -92,7 +92,7 @@ export default function AdminKYCPage() {
     }
   }
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status) => {
     switch (status) {
       case "pending":
         return <Clock className="w-4 h-4" />

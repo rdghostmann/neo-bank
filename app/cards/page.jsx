@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { CreditCard, Plus, Eye, EyeOff, Copy, Settings, Lock, Unlock, Pause } from "lucide-react"
-import { Layout } from "@/components/layout"
+import { Layout } from "@/components/DashboardLayout/DashboardLayout"
 
 const cards = [
   {

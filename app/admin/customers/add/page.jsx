@@ -13,8 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserPlus, Upload, ArrowLeft, User, Mail, Phone, MapPin, CreditCard, Shield, Camera } from "lucide-react"
-import { Layout } from "@/components/layout"
 import Link from "next/link"
+import { Layout } from "@/components/DashboardLayout/DashboardLayout"
 
 export default function AddCustomerPage() {
   const [formData, setFormData] = useState({
