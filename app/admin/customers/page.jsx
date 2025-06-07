@@ -130,7 +130,7 @@ export default function CustomersPage() {
     return matchesSearch && matchesStatus && matchesKyc
   })
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status) => {
     switch (status) {
       case "active":
         return "bg-green-100 text-green-800"
@@ -143,7 +143,7 @@ export default function CustomersPage() {
     }
   }
 
-  const getKycStatusColor = (status: string) => {
+  const getKycStatusColor = (status) => {
     switch (status) {
       case "verified":
         return "bg-green-100 text-green-800"

@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, CreditCard, TrendingUp, Menu, Bell, Search, X, Wallet, Receipt, User } from "lucide-react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { LogoutButton } from "@/components/logout-button"
+import { LogoutButton } from "../Logout-button/logout-button"
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -45,6 +45,11 @@ export function CustomerLayout({ children }) {
   const overlayVariants = {
     open: { opacity: 1 },
     closed: { opacity: 0 },
+  }
+
+  const user = {
+    name: "User",
+    email: "user@example.com"
   }
 
   return (
