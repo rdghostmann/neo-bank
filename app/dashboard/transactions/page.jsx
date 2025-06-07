@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CustomerLayout } from "@/components/customer-layout"
 import { Search, Filter, Download, ArrowUpRight, ArrowDownLeft, Calendar } from "lucide-react"
+import { CustomerLayout } from "@/components/CustomerLayout/CustomerLayout"
 
 const transactions = [
   {
