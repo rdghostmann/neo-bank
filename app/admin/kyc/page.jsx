@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Search, CheckCircle, XCircle, Clock, Eye, FileText, Camera, Phone, Mail } from "lucide-react"
-import { Layout } from "@/components/layout"
+import { Layout } from "@/components/DashboardLayout/DashboardLayout"
 
 const kycApplications = [
   {

@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
@@ -12,7 +12,6 @@ import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CustomerLayout } from "@/components/customer-layout"
-import { useAuth } from "@/lib/auth-context"
 import { LogoutButton } from "@/components/logout-button"
 import {
   User,
@@ -74,14 +73,14 @@ export default function ProfilePage() {
     confirmPassword: "",
   })
 
-  const handlePersonalInfoChange = (field: string, value: string) => {
+  const handlePersonalInfoChange = (field, value) => {
     setPersonalInfo((prev) => ({
       ...prev,
       [field]: value,
     }))
   }
 
-  const handlePasswordChange = (field: string, value: string) => {
+  const handlePasswordChange = (field, value) => {
     setPasswordData((prev) => ({
       ...prev,
       [field]: value,
@@ -94,7 +93,7 @@ export default function ProfilePage() {
     // Show success message
   }
 
-  const handlePasswordSubmit = (e: React.FormEvent) => {
+  const handlePasswordSubmit = (e) => {
     e.preventDefault()
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       alert("Passwords do not match")

@@ -59,28 +59,28 @@ const accounts = [
 ]
 
 export default function AccountsPage() {
-  const [showDetails, setShowDetails] = useState<{ [key: number]: boolean }>({})
-  const [accountStatuses, setAccountStatuses] = useState<{ [key: number]: string }>({
+  const [showDetails, setShowDetails] = useState({})
+  const [accountStatuses, setAccountStatuses] = useState({
     1: "active",
     2: "active",
     3: "active",
   })
 
-  const toggleCardDetails = (accountId: number) => {
+  const toggleCardDetails = (accountId) => {
     setShowDetails((prev) => ({
       ...prev,
       [accountId]: !prev[accountId],
     }))
   }
 
-  const toggleCardStatus = (accountId: number) => {
+  const toggleCardStatus = (accountId) => {
     setAccountStatuses((prev) => ({
       ...prev,
       [accountId]: prev[accountId] === "active" ? "locked" : "active",
     }))
   }
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
   }
 
