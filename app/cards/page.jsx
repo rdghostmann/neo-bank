@@ -42,28 +42,28 @@ const cards = [
 ]
 
 export default function CardsPage() {
-  const [showDetails, setShowDetails] = useState<{ [key: number]: boolean }>({})
-  const [cardStatuses, setCardStatuses] = useState<{ [key: number]: string }>({
+  const [showDetails, setShowDetails] = useState({})
+  const [cardStatuses, setCardStatuses] = useState({
     1: "active",
     2: "active",
     3: "locked",
   })
 
-  const toggleCardDetails = (cardId: number) => {
+  const toggleCardDetails = (cardId) => {
     setShowDetails((prev) => ({
       ...prev,
       [cardId]: !prev[cardId],
     }))
   }
 
-  const toggleCardStatus = (cardId: number) => {
+  const toggleCardStatus = (cardId) => {
     setCardStatuses((prev) => ({
       ...prev,
       [cardId]: prev[cardId] === "active" ? "locked" : "active",
     }))
   }
 
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
   }
 
