@@ -11,6 +11,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    firstName: {
+      type: String,
+      required: false,
+    },
+    lastName: {
+      type: String,
+      required: false,
+    },
     email: {
       type: String,
       unique: true,
@@ -26,6 +34,26 @@ const UserSchema = new mongoose.Schema(
       minlength: [6, 'Password must be at least 6 characters'],
       select: false // Don't return password by default
     },
+    avatar: {
+      type: String,
+      default: null,
+    },
+    balance: {
+      type: Number,
+      default: null,
+    },
+    joinDate: {
+      type: Date,
+      default: null,
+    },
+    lastLogin: {
+      type: Date,
+      default: null,
+    },
+    accountType: {
+      type: String,
+      default: null,
+    },
     phone: {
       type: String,
       default: null,
@@ -35,6 +63,10 @@ const UserSchema = new mongoose.Schema(
       default: null,
     },
     state: {
+      type: String,
+      default: null,
+    },
+    zipCode: {
       type: String,
       default: null,
     },
