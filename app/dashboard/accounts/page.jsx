@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CustomerLayout } from "@/components/customer-layout"
 import { CreditCard, Plus, Eye, EyeOff, Copy, Settings, Lock, Unlock, Pause, TrendingUp, Clock } from "lucide-react"
+import { CustomerLayout } from "@/components/CustomerLayout/CustomerLayout"
 
 const accounts = [
   {

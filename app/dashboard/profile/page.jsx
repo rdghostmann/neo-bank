@@ -11,8 +11,6 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CustomerLayout } from "@/components/customer-layout"
-import { LogoutButton } from "@/components/logout-button"
 import {
   User,
   Bell,
@@ -31,6 +29,8 @@ import {
   X,
   LogOut,
 } from "lucide-react"
+import { CustomerLayout } from "@/components/CustomerLayout/CustomerLayout"
+import { LogoutButton } from "@/components/Logout-button/logout-button"
 
 export default function ProfilePage() {
   const  user = {
