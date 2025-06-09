@@ -282,7 +282,7 @@ async function handleRegisterSubmit(e) {
                     </Button>
                   </form>
 
-                  <div className="mt-6 text-center text-sm text-slate-600 space-y-2">
+                  <div className="hidden mt-6 text-center text-sm text-slate-600 space-y-2">
                     <p className="font-medium">Demo Accounts:</p>
                     <div className="space-y-1 text-xs">
                       <p>
