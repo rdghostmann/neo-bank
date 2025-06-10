@@ -9,6 +9,8 @@ import { Users, CreditCard, AlertTriangle, DollarSign, Activity, UserPlus, List,
 import { LogoutButton } from "@/components/Logout-button/logout-button";
 import Link from "next/link"
 import { Layout } from "@/components/DashboardLayout/DashboardLayout"
+import StatCard from "./components/StatsCard"
+import RecentActivityCard from "./components/RecentActivityCard"
 
 const stats = [
   {
@@ -41,48 +43,48 @@ const stats = [
   },
 ]
 
-const recentActivity = [
-  {
-    id: 1,
-    user: "John Doe",
-    action: "Account Created",
-    time: "2 minutes ago",
-    status: "success",
-    avatar: "/placeholder.svg?height=32&width=32",
-  },
-  {
-    id: 2,
-    user: "Jane Smith",
-    action: "KYC Approved",
-    time: "5 minutes ago",
-    status: "success",
-    avatar: "/placeholder.svg?height=32&width=32",
-  },
-  {
-    id: 3,
-    user: "Mike Johnson",
-    action: "Large Transaction",
-    time: "10 minutes ago",
-    status: "warning",
-    avatar: "/placeholder.svg?height=32&width=32",
-  },
-  {
-    id: 4,
-    user: "Sarah Wilson",
-    action: "KYC Rejected",
-    time: "15 minutes ago",
-    status: "error",
-    avatar: "/placeholder.svg?height=32&width=32",
-  },
-  {
-    id: 5,
-    user: "David Chen",
-    action: "Password Reset",
-    time: "20 minutes ago",
-    status: "info",
-    avatar: "/placeholder.svg?height=32&width=32",
-  },
-]
+// const recentActivity = [
+//   {
+//     id: 1,
+//     user: "John Doe",
+//     action: "Account Created",
+//     time: "2 minutes ago",
+//     status: "success",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//   },
+//   {
+//     id: 2,
+//     user: "Jane Smith",
+//     action: "KYC Approved",
+//     time: "5 minutes ago",
+//     status: "success",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//   },
+//   {
+//     id: 3,
+//     user: "Mike Johnson",
+//     action: "Large Transaction",
+//     time: "10 minutes ago",
+//     status: "warning",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//   },
+//   {
+//     id: 4,
+//     user: "Sarah Wilson",
+//     action: "KYC Rejected",
+//     time: "15 minutes ago",
+//     status: "error",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//   },
+//   {
+//     id: 5,
+//     user: "David Chen",
+//     action: "Password Reset",
+//     time: "20 minutes ago",
+//     status: "info",
+//     avatar: "/placeholder.svg?height=32&width=32",
+//   },
+// ]
 
 const kycQueue = [
   {
@@ -114,37 +116,37 @@ const kycQueue = [
   },
 ]
 
-const recentCustomers = [
-  {
-    id: 1,
-    name: "Emily Johnson",
-    email: "emily@example.com",
-    joinDate: "Today",
-    status: "active",
-    balance: "$2,450.00",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 2,
-    name: "Robert Smith",
-    email: "robert@example.com",
-    joinDate: "Yesterday",
-    status: "pending",
-    balance: "$0.00",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-  {
-    id: 3,
-    name: "Lisa Brown",
-    email: "lisa@example.com",
-    joinDate: "2 days ago",
-    status: "active",
-    balance: "$5,230.50",
-    avatar: "/placeholder.svg?height=40&width=40",
-  },
-]
+// const recentCustomers = [
+//   {
+//     id: 1,
+//     name: "Emily Johnson",
+//     email: "emily@example.com",
+//     joinDate: "Today",
+//     status: "active",
+//     balance: "$2,450.00",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     id: 2,
+//     name: "Robert Smith",
+//     email: "robert@example.com",
+//     joinDate: "Yesterday",
+//     status: "pending",
+//     balance: "$0.00",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+//   {
+//     id: 3,
+//     name: "Lisa Brown",
+//     email: "lisa@example.com",
+//     joinDate: "2 days ago",
+//     status: "active",
+//     balance: "$5,230.50",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//   },
+// ]
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ recentActivity, recentCustomers }) {
   return (
     <Layout isAdmin>
       <div className="space-y-6 p-4 md:p-6">
@@ -188,18 +190,7 @@ export default function AdminDashboard() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * index }}
             >
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                  <stat.icon className={`h-4 w-4 ${stat.color}`} />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{stat.value}</div>
-                  <p className={`text-xs ${stat.change.startsWith("+") ? "text-green-600" : "text-red-600"}`}>
-                    {stat.change} from last month
-                  </p>
-                </CardContent>
-              </Card>
+              <StatCard {...stat} Icon={stat.icon} />
             </motion.div>
           ))}
         </motion.div>
@@ -242,58 +233,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Recent Activity */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Activity className="w-5 h-5" />
-                  Recent Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {recentActivity.map((activity) => (
-                  <motion.div
-                    key={activity.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent"
-                  >
-                    <Avatar className="w-8 h-8">
-                      <AvatarImage src={activity.avatar || "/placeholder.svg"} />
-                      <AvatarFallback>
-                        {activity.user
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">{activity.user}</p>
-                      <p className="text-xs text-muted-foreground">{activity.action}</p>
-                    </div>
-                    <div className="text-right">
-                      <Badge
-                        variant={
-                          activity.status === "success"
-                            ? "default"
-                            : activity.status === "error"
-                              ? "destructive"
-                              : activity.status === "warning"
-                                ? "secondary"
-                                : "outline"
-                        }
-                        className="text-xs"
-                      >
-                        {activity.status}
-                      </Badge>
-                      <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
-                    </div>
-                  </motion.div>
-                ))}
-                <Button variant="ghost" size="sm" className="w-full">
-                  View All Activity
-                </Button>
-              </CardContent>
-            </Card>
+            <RecentActivityCard recentActivity={recentActivity} />
           </motion.div>
 
           {/* Recent Customers */}
@@ -308,7 +248,7 @@ export default function AdminDashboard() {
               <CardContent className="space-y-4">
                 {recentCustomers.map((customer) => (
                   <motion.div
-                    key={customer.id}
+                    key={customer._id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent"
@@ -316,20 +256,21 @@ export default function AdminDashboard() {
                     <Avatar>
                       <AvatarImage src={customer.avatar || "/placeholder.svg"} />
                       <AvatarFallback>
-                        {customer.name
+                        {(customer.name ?? "")
                           .split(" ")
                           .map((n) => n[0])
                           .join("")}
+
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm">{customer.name}</p>
+                      <p className="font-medium text-sm">{customer.username}</p>
                       <p className="text-xs text-muted-foreground">{customer.email}</p>
                       <p className="text-xs text-muted-foreground">Joined {customer.joinDate}</p>
                     </div>
                     <div className="text-right">
-                      <Badge variant={customer.status === "active" ? "default" : "secondary"} className="text-xs">
-                        {customer.status}
+                      <Badge variant={customer.type === "active" ? "default" : "secondary"} className="text-xs">
+                        {customer.type}
                       </Badge>
                       <p className="text-xs font-medium mt-1">{customer.balance}</p>
                     </div>
@@ -378,8 +319,8 @@ export default function AdminDashboard() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <Badge variant={item.status === "pending" ? "secondary" : "outline"} className="text-xs">
-                        {item.status}
+                      <Badge variant={item.type === "pending" ? "secondary" : "outline"} className="text-xs">
+                        {item.type}
                       </Badge>
                     </div>
                   </motion.div>
