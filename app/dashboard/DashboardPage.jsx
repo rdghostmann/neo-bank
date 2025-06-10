@@ -24,45 +24,6 @@ import {
 import { LogoutButton } from '@/components/Logout-button/logout-button';
 import { CustomerLayout } from "@/components/CustomerLayout/CustomerLayout"
 
-const transactions = [
-  {
-    id: 1,
-    type: "credit",
-    amount: 2500.0,
-    description: "Salary Deposit",
-    date: "Today, 2:30 PM",
-    category: "Income",
-    avatar: "💼",
-  },
-  {
-    id: 2,
-    type: "debit",
-    amount: 45.99,
-    description: "Netflix Subscription",
-    date: "Yesterday, 11:45 AM",
-    category: "Entertainment",
-    avatar: "🎬",
-  },
-  {
-    id: 3,
-    type: "debit",
-    amount: 120.5,
-    description: "Grocery Store",
-    date: "Dec 28, 4:20 PM",
-    category: "Shopping",
-    avatar: "🛒",
-  },
-  {
-    id: 4,
-    type: "credit",
-    amount: 75.0,
-    description: "Cashback Reward",
-    date: "Dec 27, 9:15 AM",
-    category: "Rewards",
-    avatar: "🎁",
-  },
-]
-
 const quickActions = [
   { icon: Send, label: "Transfer", color: "from-blue-500 to-blue-600", bgColor: "bg-blue-50" },
   { icon: Plus, label: "Deposit", color: "from-green-500 to-green-600", bgColor: "bg-green-50" },
@@ -70,57 +31,13 @@ const quickActions = [
   { icon: Wifi, label: "Pay Bills", color: "from-orange-500 to-orange-600", bgColor: "bg-orange-50" },
 ]
 
-const notifications = [
-  {
-    id: 1,
-    title: "Payment Received",
-    message: "You received $2,500 from Acme Corp",
-    time: "2 hours ago",
-    type: "success",
-  },
-  {
-    id: 2,
-    title: "Bill Reminder",
-    message: "Your electricity bill is due tomorrow",
-    time: "1 day ago",
-    type: "warning",
-  },
-  {
-    id: 3,
-    title: "Security Alert",
-    message: "New login from Chrome on Windows",
-    time: "2 days ago",
-    type: "info",
-  },
-]
 
-export default function Dashboard() {
-  const user  = {
-    name: "User"
-  }
+
+export default function Dashboard({user, transactions, notifications, cards }) {
+  
   const [selectedCard, setSelectedCard] = useState(0)
   const [showBalance, setShowBalance] = useState(true)
 
-  const cards = [
-    {
-      type: "Checking",
-      number: "•••• 4532",
-      balance: 12345.67,
-      color: "from-green-500 to-emerald-600",
-    },
-    {
-      type: "Savings",
-      number: "•••• 7891",
-      balance: 25678.9,
-      color: "from-blue-500 to-blue-600",
-    },
-    {
-      type: "Credit",
-      number: "•••• 2468",
-      balance: 3456.78,
-      color: "from-purple-500 to-purple-600",
-    },
-  ]
 
   const totalBalance = cards.reduce((sum, card) => sum + card.balance, 0)
 
@@ -137,12 +54,12 @@ export default function Dashboard() {
             <Avatar className="w-16 h-16 ring-4 ring-green-100">
               <AvatarImage src="/placeholder.svg?height=64&width=64" />
               <AvatarFallback className="bg-gradient-to-br from-green-500 to-emerald-600 text-white text-xl">
-                {user?.name?.charAt(0) || "A"}
+                {user?.username?.charAt(0) || "A"}
               </AvatarFallback>
             </Avatar>
             <div>
               <h1 className="text-2xl font-bold text-slate-800">
-                Good morning, {user?.name?.split(" ")[0] || "Alex"}! 👋
+                Good morning, {user?.username?.split(" ")[0] || "Alex"}! 👋
               </h1>
               <LogoutButton />
               <div className="flex items-center gap-2">
