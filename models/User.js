@@ -30,9 +30,9 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
-      minlength: [6, 'Password must be at least 6 characters'],
-      select: false // Don't return password by default
+      required: [true, "Password is required"],
+      minlength: [6, "Password must be at least 6 characters"],
+      select: false, // Don't return password by default
     },
     avatar: {
       type: String,
@@ -54,22 +54,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    phone: {
-      type: String,
-      default: null,
-    },
-    country: {
-      type: String,
-      default: null,
-    },
-    state: {
-      type: String,
-      default: null,
-    },
-    zipCode: {
-      type: String,
-      default: null,
-    },
     role: {
       type: String,
       enum: ["user", "superAdmin", "admin", "writer", "editor"],
@@ -80,12 +64,23 @@ const UserSchema = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
+
+    // ✅ Verification fields
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+    },
+    verificationTokenExpiry: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
   }
 );
-
 
 // Fix the model export
 const User = mongoose.models?.User || mongoose.model("User", UserSchema);
