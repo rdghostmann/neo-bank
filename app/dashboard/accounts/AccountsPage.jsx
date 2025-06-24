@@ -10,53 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CreditCard, Plus, Eye, EyeOff, Copy, Settings, Lock, Unlock, Pause, TrendingUp, Clock } from "lucide-react"
 import { CustomerLayout } from "@/components/CustomerLayout/CustomerLayout"
 
-// const accounts = [
-//   {
-//     id: 1,
-//     type: "Checking",
-//     number: "4532 1234 5678 9012",
-//     balance: 12345.67,
-//     availableBalance: 12345.67,
-//     color: "from-blue-600 to-blue-800",
-//     status: "active",
-//     expiryDate: "12/26",
-//     cvv: "123",
-//     interestRate: "0.01%",
-//     openedDate: "Jan 15, 2020",
-//     transactions: 156,
-//   },
-//   {
-//     id: 2,
-//     type: "Savings",
-//     number: "4532 7891 2345 6789",
-//     balance: 25678.9,
-//     availableBalance: 25678.9,
-//     color: "from-green-600 to-green-800",
-//     status: "active",
-//     expiryDate: "08/27",
-//     cvv: "456",
-//     interestRate: "1.25%",
-//     openedDate: "Mar 22, 2019",
-//     transactions: 42,
-//   },
-//   {
-//     id: 3,
-//     type: "Credit",
-//     number: "4532 2468 1357 9024",
-//     balance: 3456.78,
-//     availableBalance: 6543.22,
-//     color: "from-purple-600 to-purple-800",
-//     status: "active",
-//     expiryDate: "03/28",
-//     cvv: "789",
-//     creditLimit: 10000,
-//     interestRate: "18.99%",
-//     openedDate: "Sep 10, 2021",
-//     transactions: 87,
-//     paymentDue: "Jan 15, 2024",
-//     minimumPayment: 35.0,
-//   },
-// ]
+// ...existing code...
 
 export default function AccountsPage({accounts}) {
   const [showDetails, setShowDetails] = useState({})
@@ -122,12 +76,12 @@ export default function AccountsPage({accounts}) {
                 <div className="flex justify-between items-start mb-8">
                   <div>
                     <p className="text-sm opacity-80">{account.type} Account</p>
-                    
+                    {/* CHANGED: Use account.status from DB for badge */}
                     <Badge
-                      variant={accountStatuses[account.id] === "active" ? "default" : "destructive"}
+                      variant={account.status === "active" ? "default" : "destructive"}
                       className="mt-1"
                     >
-                      {accountStatuses[account.status]}
+                      {account.status}
                     </Badge>
                   </div>
                   <CreditCard className="w-8 h-8 opacity-80" />
@@ -277,12 +231,13 @@ export default function AccountsPage({accounts}) {
                         </Button>
                       </div>
                     </TabsContent>
+                    {/* CHANGED: Use account.status from DB for badge in Account Info */}
                     <TabsContent value="info">
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="text-sm text-muted-foreground">Status</span>
-                          <Badge variant={accountStatuses[account.id] === "active" ? "default" : "destructive"}>
-                            {accountStatuses[account.id]}
+                          <Badge variant={account.status === "active" ? "default" : "destructive"}>
+                            {account.status}
                           </Badge>
                         </div>
                         <div className="flex items-center justify-between">
