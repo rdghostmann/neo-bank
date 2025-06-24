@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { registerUser } from "@/lib/registerUser";
 
 const Signin = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -57,7 +58,7 @@ const Signin = () => {
       }
     }
   }
-// Register handler
+// Register handler using server action
 async function handleRegisterSubmit(e) {
   e.preventDefault();
   setError("");
@@ -69,32 +70,31 @@ async function handleRegisterSubmit(e) {
   setIsLoading(true);
 
   try {
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: registerData.name,
-        email: registerData.email,
-        password: registerData.password,
-      }),
+    // Call the server action directly
+    const result = await registerUser({
+      username: registerData.name,
+      email: registerData.email,
+      password: registerData.password,
     });
 
-    const data = await res.json();
     setIsLoading(false);
 
-    if (!res.ok) {
-      setError(data.error || "Registration failed.");
-      toast.error(data.error || "Registration failed.");
+    if (!result?.success) {
+      setError(result?.message || "Registration failed.");
+      toast.error(result?.message || "Registration failed.");
       return;
     }
 
-    toast.success("Registration successful! You can now log in.");
+    toast.success("Registration successful! Please check your email to verify your account.");
     setRegisterData({
       name: "",
       email: "",
       password: "",
       confirmPassword: "",
     });
+
+    // Redirect to email confirmation page
+    router.push(`/verify-email/confirm-email/${encodeURIComponent(registerData.email)}`);
   } catch (err) {
     setError("Registration failed.");
     toast.error("Registration failed.");
