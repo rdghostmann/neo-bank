@@ -430,7 +430,7 @@ export default function Home() {
                 <div className="relative w-full h-96 bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden border border-green-500/20">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
                   <img
-                    src="/placeholder.svg?height=400&width=600"
+                    src="/hero-img-2.jpg"
                     alt="Digital Banking Interface"
                     className="w-full h-full object-cover opacity-80"
                   />
@@ -444,7 +444,7 @@ export default function Home() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20"></div>
                   <img
-                    src="/placeholder.svg?height=200&width=300"
+                    src="/hero-img-3.jpg"
                     alt="Mobile Banking App"
                     className="w-full h-full object-cover opacity-80"
                   />
