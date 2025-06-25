@@ -83,35 +83,35 @@ const testimonials = [
   {
     name: "Jim Morison",
     position: "Director, BAT",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/testimonial-client/client-1.jpg",
     quote:
       "I opened a checking and savings account at NeoBank. The teller who helped me was a pleasure to work with. She was very knowledgeable and thorough setting up my accounts. She made my day a pleasant day. Thank you for the terrific customer service.",
   },
   {
     name: "Alex Cruis",
     position: "CEO, IBAC",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/testimonial-client/client-2.jpg",
     quote:
       "I opened a checking and savings account at NeoBank. The teller who helped me was a pleasure to work with. She was very knowledgeable and thorough setting up my accounts. She made my day a pleasant day. Thank you for the terrific customer service.",
   },
   {
     name: "Tom Haris",
     position: "Engineer, Olleo",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/testimonial-client/client-3.jpg",
     quote:
       "I've been with NeoBank for four years. I went through a loan modification with them, as well as a six-month forbearance. I also have a credit card with them, which they have cancelled after every late payment, as well as a cash account with withdrawal fees. They are always there to help me.",
   },
   {
     name: "Harry Jackson",
     position: "Entrepreneur",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/testimonial-client/client-4.jpg",
     quote:
       "Karla treated me as if I were a person, not simply a customer. She remained on the phone with me until I had calmed down and she was satisfied that I was fine. She stated that she would not be able to go until she had further information.",
   },
   {
     name: "Chris Haris",
     position: "MD, ITec",
-    image: "/placeholder.svg?height=60&width=60",
+    image: "/testimonial-client/client-1.jpg",
     quote:
       "I usually request service through the app or website, although I have called in on occasion. They're all extremely responsive and accommodating.",
   },
