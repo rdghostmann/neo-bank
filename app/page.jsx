@@ -655,7 +655,7 @@ export default function Home() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
                     <img
-                      src="/placeholder.svg?height=200&width=200"
+                      src="/wh-img-4.jpg"
                       alt="Digital Innovation"
                       className="w-full h-full object-cover opacity-80"
                     />
@@ -667,7 +667,7 @@ export default function Home() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20"></div>
                     <img
-                      src="/placeholder.svg?height=150&width=200"
+                      src="/wh-img-5.jpg"
                       alt="Banking Technology"
                       className="w-full h-full object-cover opacity-80"
                     />
@@ -683,7 +683,7 @@ export default function Home() {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
                     <img
-                      src="/placeholder.svg?height=300&width=200"
+                      src="/wh-img-6.jpg"
                       alt="Future Banking"
                       className="w-full h-full object-cover opacity-80"
                     />
