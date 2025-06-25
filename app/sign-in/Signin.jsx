@@ -230,7 +230,7 @@ async function handleRegisterSubmit(e) {
                           placeholder="name@example.com"
                           value={loginData.email}
                           onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500"
+                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
                           required
                         />
                       </div>
@@ -255,7 +255,7 @@ async function handleRegisterSubmit(e) {
                           placeholder="••••••••"
                           value={loginData.password}
                           onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                          className="pl-10 pr-10 border-green-200 focus:border-green-500 focus:ring-green-500"
+                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
                           required
                         />
                         <Button
@@ -308,7 +308,7 @@ async function handleRegisterSubmit(e) {
                           placeholder="John Doe"
                           value={registerData.name}
                           onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
-                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500"
+                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
                           required
                         />
                       </div>
@@ -325,7 +325,7 @@ async function handleRegisterSubmit(e) {
                           placeholder="name@example.com"
                           value={registerData.email}
                           onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
-                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500"
+                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
                           required
                         />
                       </div>
@@ -342,7 +342,7 @@ async function handleRegisterSubmit(e) {
                           placeholder="••••••••"
                           value={registerData.password}
                           onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500"
+                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
                           required
                         />
                       </div>
@@ -359,7 +359,7 @@ async function handleRegisterSubmit(e) {
                           placeholder="••••••••"
                           value={registerData.confirmPassword}
                           onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
-                          className="pl-10 pr-10 border-green-200 focus:border-green-500 focus:ring-green-500"
+                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
                           required
                         />
                         <Button

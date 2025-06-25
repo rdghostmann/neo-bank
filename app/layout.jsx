@@ -32,18 +32,18 @@ export default function RootLayout({ children }) {
     }
   }
   return (
-    <html lang="en" crosspilot="" className="light" style={{colorScheme:"light"}}>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} cz-shortcut-listen="true">
-        <SessionWrapper>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-            <Toaster />
-          </ThemeProvider>
-        </SessionWrapper>
-      </body>
-    </html>
+    <html lang="en" crosspilot="" suppressHydrationWarning>
+    <head>
+      <link rel="icon" href="/favicon.ico" sizes="any" />
+    </head>
+    <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} cz-shortcut-listen="true">
+      <SessionWrapper>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </SessionWrapper>
+    </body>
+  </html>
   );
 }
