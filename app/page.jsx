@@ -179,7 +179,7 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
- 
+
 
   return (
     <div className="min-h-screen bg-slate-900 text-white overflow-hidden">
@@ -304,7 +304,7 @@ export default function Home() {
       <section className="relative z-10 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-           
+
             {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -766,12 +766,62 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {[
-                    { flag: "🇺🇸", name: "US Dollar", amount: "120.54", change: "+0.50%", positive: true },
-                    { flag: "🇯🇵", name: "Japanese Yen", amount: "134.76", change: "+0.24%", positive: true },
-                    { flag: "🇬🇧", name: "British Pound", amount: "245.10", change: "-0.30%", positive: false },
-                    { flag: "🇳🇿", name: "New Zealand Dollar", amount: "0.7564", change: "-0.063%", positive: false },
-                    { flag: "🇨🇦", name: "Canadian Dollar", amount: "1.2741", change: "-0.76%", positive: false },
-                    { flag: "🇨🇭", name: "Swiss Franc", amount: "15.063", change: "+0.26%", positive: true },
+                    {
+                      flag: "/flags/usa.png",
+                      name: "US Dollar",
+                      amount: "120.54",
+                      change: "+0.50%",
+                      positive: true,
+                    },
+                    {
+                      flag: "/flags/japan.png",
+                      name: "Japanese Yen",
+                      amount: "134.76",
+                      change: "+0.24%",
+                      positive: true,
+                    },
+                    {
+                      flag: "/flags/uk.png",
+                      name: "British Pound",
+                      amount: "245.10",
+                      change: "-0.30%",
+                      positive: false,
+                    },
+                    {
+                      flag: "/flags/newzland.png",
+                      name: "New Zealand Dollar",
+                      amount: "0.7564",
+                      change: "-0.063%",
+                      positive: false,
+                    },
+                    {
+                      flag: "/flags/canada.png",
+                      name: "Canadian Dollar",
+                      amount: "1.2741",
+                      change: "-0.76%",
+                      positive: false,
+                    },
+                    {
+                      flag: "/flags/france.png",
+                      name: "Euro",
+                      amount: "1.0852",
+                      change: "+0.12%",
+                      positive: true,
+                    },
+                    {
+                      flag: "/flags/china.png",
+                      name: "Chinese Yuan",
+                      amount: "7.1234",
+                      change: "+0.18%",
+                      positive: true,
+                    },
+                    {
+                      flag: "/flags/korea.png",
+                      name: "South Korean Won",
+                      amount: "1320.45",
+                      change: "-0.22%",
+                      positive: false,
+                    },
                   ].map((currency, index) => (
                     <motion.tr
                       key={index}
@@ -782,7 +832,11 @@ export default function Home() {
                     >
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          <span className="text-2xl">{currency.flag}</span>
+                          <img
+                            src={currency.flag}
+                            alt={currency.name + " flag"}
+                            className="w-7 h-7 rounded-full border border-green-500/30 bg-white object-cover"
+                          />
                           <span className="text-white font-medium">{currency.name}</span>
                         </div>
                       </td>
@@ -882,9 +936,8 @@ export default function Home() {
                       opacity: activeTestimonial === index ? 1 : 0,
                       scale: activeTestimonial === index ? 1 : 0.9,
                     }}
-                    className={`w-full md:w-2/3 lg:w-1/2 mx-auto flex-shrink-0 ${
-                      activeTestimonial === index ? "block" : "hidden"
-                    }`}
+                    className={`w-full md:w-2/3 lg:w-1/2 mx-auto flex-shrink-0 ${activeTestimonial === index ? "block" : "hidden"
+                      }`}
                   >
                     <Card className="bg-slate-800/50 border-green-500/20 transition-all duration-300 h-full backdrop-blur-sm">
                       <CardContent className="p-8">
@@ -918,9 +971,8 @@ export default function Home() {
                 <button
                   key={index}
                   onClick={() => setActiveTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    activeTestimonial === index ? "bg-green-500 scale-125" : "bg-slate-600 hover:bg-green-500/50"
-                  }`}
+                  className={`w-3 h-3 rounded-full transition-all ${activeTestimonial === index ? "bg-green-500 scale-125" : "bg-slate-600 hover:bg-green-500/50"
+                    }`}
                   aria-label={`View testimonial ${index + 1}`}
                 />
               ))}
