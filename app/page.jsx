@@ -329,8 +329,8 @@ export default function Home() {
 
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight">
                   <span className="block text-white">Transfer Money</span>
-                  <span className="block text-white">Across The World In</span>
-                  <span className="block bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                  <span className="text-white">Across The World In </span>
+                  <span className="bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
                     Real time
                   </span>
                 </h1>

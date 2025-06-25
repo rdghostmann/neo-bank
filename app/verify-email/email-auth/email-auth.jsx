@@ -2,12 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { CircleX, SquareCheckBig } from "lucide-react";
 import { verifyEmail } from "@/lib/verifyEmail"; // Import the server action
+import { toast } from "sonner";
 
 const VerifyEmail = () => {
-  const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
 
