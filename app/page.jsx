@@ -402,55 +402,41 @@ export default function Home() {
             </motion.div>
 
             {/* Right Content - Hero Images */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="relative"
-            >
+            <div className="lg:col-span-6">
               <div className="relative">
-                {/* Floating Stats Card */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="absolute top-8 left-8 z-10 bg-slate-800/90 backdrop-blur-xl border border-green-500/20 rounded-2xl p-4 shadow-2xl"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                      <Globe className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h6 className="text-2xl font-bold text-white">18.5M+</h6>
-                      <p className="text-green-400 text-sm">Active Users</p>
-                    </div>
+                {/* Floating Promo Text */}
+                <div className="absolute top-8 left-8 z-10 bg-slate-800/90 backdrop-blur-xl border border-green-500/20 rounded-2xl p-4 shadow-2xl flex items-center gap-3 animate-bounce">
+                  <span className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl">
+                    {/* Replace with your group icon */}
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M17 21v-2a4 4 0 00-3-3.87M9 21v-2a4 4 0 013-3.87m0 0A4 4 0 005 17v2m8-5a4 4 0 100-8 4 4 0 000 8zm6 2a2 2 0 11-4 0 2 2 0 014 0zm-12 0a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </span>
+                  <div>
+                    <h6 className="text-2xl font-bold text-white">18.5M+</h6>
+                    <span className="text-green-400 text-sm">Active Users</span>
                   </div>
-                </motion.div>
-
+                </div>
                 {/* Main Hero Image */}
                 <div className="relative w-full h-96 bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden border border-green-500/20">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
                   <img
                     src="/hero-img-2.jpg"
-                    alt="Digital Banking Interface"
+                    alt="Image"
                     className="w-full h-full object-cover opacity-80"
                   />
                 </div>
-
-                {/* Secondary Image */}
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                  className="absolute bottom-8 right-8 w-48 h-32 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl overflow-hidden border border-green-500/20 shadow-2xl"
-                >
+                {/* Secondary Hero Image */}
+                <div className="absolute bottom-8 right-8 w-48 h-32 bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl overflow-hidden border border-green-500/20 shadow-2xl">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20"></div>
                   <img
                     src="/hero-img-3.jpg"
-                    alt="Mobile Banking App"
+                    alt="Image"
                     className="w-full h-full object-cover opacity-80"
                   />
-                </motion.div>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -494,7 +480,7 @@ export default function Home() {
                 <div className="relative w-full h-80 bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl overflow-hidden border border-green-500/20">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
                   <img
-                    src="/placeholder.svg?height=400&width=500"
+                    src="/"
                     alt="About NeoBank"
                     className="w-full h-full object-cover opacity-80"
                   />
