@@ -16,8 +16,15 @@ import { registerUser } from "@/lib/registerUser";
 const Signin = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [registerData, setRegisterData] = useState({
-    name: "",
+    legalFirstName: "",
+    middleName: "",
+    legalLastName: "",
+    username: "",
     email: "",
+    phone: "",
+    country: "",
+    accountType: "",
+    transactionPin: "",
     password: "",
     confirmPassword: "",
   });
@@ -26,7 +33,6 @@ const Signin = () => {
   const [error, setError] = useState("");
 
   const router = useRouter();
-
 
   // Login handler
   async function handleLoginSubmit(e) {
@@ -58,49 +64,72 @@ const Signin = () => {
       }
     }
   }
-// Register handler using server action
-async function handleRegisterSubmit(e) {
-  e.preventDefault();
-  setError("");
-  if (registerData.password !== registerData.confirmPassword) {
-    setError("Passwords do not match.");
-    toast.error("Passwords do not match.");
-    return;
-  }
-  setIsLoading(true);
 
-  try {
-    // Call the server action directly
-    const result = await registerUser({
-      username: registerData.name,
-      email: registerData.email,
-      password: registerData.password,
-    });
-
-    setIsLoading(false);
-
-    if (!result?.success) {
-      setError(result?.message || "Registration failed.");
-      toast.error(result?.message || "Registration failed.");
+  // Register handler
+  async function handleRegisterSubmit(e) {
+    e.preventDefault();
+    setError("");
+    if (registerData.password !== registerData.confirmPassword) {
+      setError("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
+    if (registerData.transactionPin.length !== 4 || !/^\d{4}$/.test(registerData.transactionPin)) {
+      setError("Transaction pin must be exactly 4 digits.");
+      toast.error("Transaction pin must be exactly 4 digits.");
+      return;
+    }
+    setIsLoading(true);
 
-    toast.success("Registration successful! Please check your email to verify your account.");
-    setRegisterData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          legalFirstName: registerData.legalFirstName,
+          middleName: registerData.middleName,
+          legalLastName: registerData.legalLastName,
+          username: registerData.username,
+          email: registerData.email,
+          phone: registerData.phone,
+          country: registerData.country,
+          accountType: registerData.accountType,
+          transactionPin: registerData.transactionPin,
+          password: registerData.password,
+        }),
+      });
 
-    // Redirect to email confirmation page
-    router.push(`/verify-email/confirm-email/${encodeURIComponent(registerData.email)}`);
-  } catch (err) {
-    setError("Registration failed.");
-    toast.error("Registration failed.");
-    setIsLoading(false);
+      const result = await res.json();
+      setIsLoading(false);
+
+      if (!result?.success) {
+        setError(result?.message || "Registration failed.");
+        toast.error(result?.message || "Registration failed.");
+        return;
+      }
+
+      toast.success("Registration successful! Please check your email to verify your account.");
+      setRegisterData({
+        legalFirstName: "",
+        middleName: "",
+        legalLastName: "",
+        username: "",
+        email: "",
+        phone: "",
+        country: "",
+        accountType: "",
+        transactionPin: "",
+        password: "",
+        confirmPassword: "",
+      });
+
+      router.push(`/verify-email/confirm-email/${encodeURIComponent(registerData.email)}`);
+    } catch (err) {
+      setError("Registration failed.");
+      toast.error("Registration failed.");
+      setIsLoading(false);
+    }
   }
-}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-green-50 to-emerald-50 p-4">
@@ -182,8 +211,6 @@ async function handleRegisterSubmit(e) {
             </h1>
             <p className="text-slate-600">Digital Banking Revolution</p>
           </div>
-
-
 
           <Card className="border-none shadow-2xl bg-white/80 backdrop-blur-xl">
             <Tabs defaultValue="login">
@@ -298,54 +325,137 @@ async function handleRegisterSubmit(e) {
                 <TabsContent value="register">
                   <form onSubmit={handleRegisterSubmit} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-slate-700">
-                        Full Name
+                      <Label htmlFor="legalFirstName" className="text-slate-700">
+                        Legal First Name
                       </Label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <Input
-                          id="name"
-                          placeholder="John Doe"
-                          value={registerData.name}
-                          onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
-                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
-                          required
-                        />
-                      </div>
+                      <Input
+                        id="legalFirstName"
+                        placeholder="Enter your first name"
+                        value={registerData.legalFirstName}
+                        onChange={e => setRegisterData({ ...registerData, legalFirstName: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="middleName" className="text-slate-700">
+                        Middle Name
+                      </Label>
+                      <Input
+                        id="middleName"
+                        placeholder="Enter your middle name"
+                        value={registerData.middleName}
+                        onChange={e => setRegisterData({ ...registerData, middleName: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="legalLastName" className="text-slate-700">
+                        Legal Last Name
+                      </Label>
+                      <Input
+                        id="legalLastName"
+                        placeholder="Last name"
+                        value={registerData.legalLastName}
+                        onChange={e => setRegisterData({ ...registerData, legalLastName: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="username" className="text-slate-700">
+                        User Name
+                      </Label>
+                      <Input
+                        id="username"
+                        placeholder="Enter Unique Username"
+                        value={registerData.username}
+                        onChange={e => setRegisterData({ ...registerData, username: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="register-email" className="text-slate-700">
                         Email
                       </Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <Input
-                          id="register-email"
-                          type="email"
-                          placeholder="name@example.com"
-                          value={registerData.email}
-                          onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
-                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
-                          required
-                        />
-                      </div>
+                      <Input
+                        id="register-email"
+                        type="email"
+                        placeholder="name@email.com"
+                        value={registerData.email}
+                        onChange={e => setRegisterData({ ...registerData, email: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-slate-700">
+                        Phone
+                      </Label>
+                      <Input
+                        id="phone"
+                        placeholder="+123456789"
+                        value={registerData.phone}
+                        onChange={e => setRegisterData({ ...registerData, phone: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="country" className="text-slate-700">
+                        Country
+                      </Label>
+                      <Input
+                        id="country"
+                        placeholder="Choose Country"
+                        value={registerData.country}
+                        onChange={e => setRegisterData({ ...registerData, country: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="accountType" className="text-slate-700">
+                        Account Type
+                      </Label>
+                      <Input
+                        id="accountType"
+                        placeholder="Please select Account Type"
+                        value={registerData.accountType}
+                        onChange={e => setRegisterData({ ...registerData, accountType: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="transactionPin" className="text-slate-700">
+                        4 Digit Transaction Pin
+                      </Label>
+                      <Input
+                        id="transactionPin"
+                        type="password"
+                        placeholder="Transaction Pin"
+                        value={registerData.transactionPin}
+                        onChange={e => setRegisterData({ ...registerData, transactionPin: e.target.value.replace(/\D/, "") })}
+                        maxLength={4}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="register-password" className="text-slate-700">
                         Password
                       </Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-                        <Input
-                          id="register-password"
-                          type={showPassword ? "text" : "password"}
-                          placeholder="••••••••"
-                          value={registerData.password}
-                          onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-                          className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
-                          required
-                        />
-                      </div>
+                      <Input
+                        id="register-password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        value={registerData.password}
+                        onChange={e => setRegisterData({ ...registerData, password: e.target.value })}
+                        className="border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
+                        required
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="confirm-password" className="text-slate-700">
@@ -358,7 +468,7 @@ async function handleRegisterSubmit(e) {
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           value={registerData.confirmPassword}
-                          onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
+                          onChange={e => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
                           className="pl-10 border-green-200 focus:border-green-500 focus:ring-green-500 text-slate-800"
                           required
                         />
