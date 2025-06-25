@@ -401,6 +401,7 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
+
             {/* Right Content - Hero Images */}
             <div className="lg:col-span-6">
               <div className="relative">
