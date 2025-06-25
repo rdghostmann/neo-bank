@@ -23,7 +23,7 @@ const OtpClient = ({ userId }) => {
 
     setLoading(true);
 
-    // const result = await verifyOtp({ userId, email, otp });
+    const result = await verifyOtp({ userId, email, otp });
 
     if (result.success) {
       toast.success(result.message);
