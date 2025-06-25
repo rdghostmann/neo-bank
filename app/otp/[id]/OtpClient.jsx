@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { verifyOtp } from "@/app/actions/verifyOtp";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -24,7 +23,7 @@ const OtpClient = ({ userId }) => {
 
     setLoading(true);
 
-    const result = await verifyOtp({ userId, email, otp });
+    // const result = await verifyOtp({ userId, email, otp });
 
     if (result.success) {
       toast.success(result.message);
