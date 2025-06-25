@@ -123,7 +123,7 @@ const blogPosts = [
     category: "Corporate",
     date: "May 22, 2022",
     comments: "10+ Comments",
-    image: "/placeholder.svg?height=250&width=400",
+    image: "/blog-img/blog-1.jpg",
     url: "https://www.cnbc.com/2020/02/27/5-things-every-new-business-owner-needs-to-know-before-starting.html",
   },
   {
@@ -131,7 +131,7 @@ const blogPosts = [
     category: "Consumer",
     date: "May 13, 2022",
     comments: "10+ Comments",
-    image: "/placeholder.svg?height=250&width=400",
+    image: "/blog-img/blog-2.jpg",
     url: "https://www.investopedia.com/articles/insights/122016/9-common-effects-inflation.asp",
   },
   {
@@ -139,7 +139,7 @@ const blogPosts = [
     category: "Finance",
     date: "Apr 15, 2022",
     comments: "10+ Comments",
-    image: "/placeholder.svg?height=250&width=400",
+    image: "/blog-img/blog-3.jpg",
     url: "https://www.airtreks.com/go/foreign-currency/",
   },
 ]
