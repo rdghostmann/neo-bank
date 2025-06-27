@@ -244,12 +244,12 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               className="hidden md:flex items-center space-x-4"
             >
-              <Link href="/sign-in">
+              <Link href="/login">
                 <Button variant="ghost" className="text-slate-300 hover:text-green-400 hover:bg-green-500/10">
                   Access Portal
                 </Button>
               </Link>
-              <Link href="/sign-in">
+              <Link href="/login">
                 <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg shadow-green-500/25">
                   Join the Future
                   <Sparkles className="w-4 h-4 ml-2" />
@@ -288,12 +288,12 @@ export default function Home() {
                 </a>
               ))}
               <div className="pt-4 border-t border-green-500/20 space-y-3">
-                <Link href="/sign-in" className="block">
+                <Link href="/login" className="block">
                   <Button variant="outline" className="w-full border-green-500/30 text-green-400 hover:bg-green-500/10">
                     Access Portal
                   </Button>
                 </Link>
-                <Link href="/sign-in" className="block">
+                <Link href="/login" className="block">
                   <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white">
                     Join the Future
                   </Button>
@@ -348,7 +348,7 @@ export default function Home() {
                 transition={{ delay: 0.6 }}
                 className="flex flex-col sm:flex-row gap-6 items-start"
               >
-                <Link href="/sign-in">
+                <Link href="/login">
                   <Button
                     size="lg"
                     className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-6 text-lg shadow-2xl shadow-green-500/25"
@@ -1157,7 +1157,7 @@ export default function Home() {
                 description:
                   "With our digital platform, you may send money to relatives and friends all around the world.",
                 link: "SEND MONEY",
-                href: "/sign-in",
+                href: "/login",
               },
               {
                 icon: "chart",
@@ -1165,7 +1165,7 @@ export default function Home() {
                 description:
                   "You can always watch the market's movement and make trading decisions with our currency charts.",
                 link: "VIEW CHART",
-                href: "/sign-in",
+                href: "/login",
               },
               {
                 icon: "alert",
@@ -1173,14 +1173,14 @@ export default function Home() {
                 description:
                   "To enable our clients to convert, we at NeoBank provide the finest currency rates in the market.",
                 link: "CREATE ALERT",
-                href: "/sign-in",
+                href: "/login",
               },
               {
                 icon: "user",
                 title: "Create Account",
                 description: "Create a free digital bank account with us today to send money around the world.",
                 link: "GET STARTED",
-                href: "/sign-in",
+                href: "/login",
               },
             ].map((tool, index) => (
               <motion.div
@@ -1234,7 +1234,7 @@ export default function Home() {
               digital banking platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-              <Link href="/sign-in">
+              <Link href="/login">
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-12 py-6 text-lg shadow-2xl shadow-green-500/25"

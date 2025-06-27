@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 export function LogoutButton({ showIcon = true, variant = "ghost", className, children, ...props }) {
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/sign-in" });
+    await signOut({ callbackUrl: "/login" });
     toast.success("You have been logged out.");
   };
 

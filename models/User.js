@@ -53,8 +53,8 @@ const UserSchema = new mongoose.Schema(
     transactionPin: {
       type: String,
       required: [true, "Transaction pin is required"],
-      minlength: [4, "Transaction pin must be 4 digits"],
-      maxlength: [4, "Transaction pin must be 4 digits"],
+      // minlength: [4, "Transaction pin must be 4 digits"],
+      // maxlength: [4, "Transaction pin must be 4 digits"],
       select: false,
     },
     // Password

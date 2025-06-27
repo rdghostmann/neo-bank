@@ -122,7 +122,7 @@ export default function DigitalBankingPage() {
               financial technology at your fingertips.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/sign-in">
+              <Link href="/login">
                 <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-8 py-6 text-lg">
                   Go Digital Now
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -290,7 +290,7 @@ export default function DigitalBankingPage() {
             <p className="text-xl text-slate-300">
               Experience banking without boundaries. Start your digital journey today.
             </p>
-            <Link href="/sign-in">
+            <Link href="/login">
               <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-12 py-6 text-lg">
                 Start Digital Banking
                 <ArrowRight className="w-5 h-5 ml-2" />

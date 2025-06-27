@@ -8,17 +8,19 @@ export async function middleware(req) {
   // Allow public paths
   if (
     // pathname.startsWith("/api") ||
-    pathname.startsWith("/sign-in") ||
+    pathname.startsWith("/login") ||
     pathname === "/"
   ) {
     return NextResponse.next();
   }
+  
 
   // If not logged in, redirect to sign-in
   if (!token) {
-    return NextResponse.redirect(new URL("/sign-in", req.url));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
+  
   // Role-based protection
   if (pathname.startsWith("/admin") && token.role !== "admin") {
     return NextResponse.redirect(new URL("/dashboard", req.url));
