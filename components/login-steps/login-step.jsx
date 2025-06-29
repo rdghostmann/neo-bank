@@ -1,59 +1,74 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { LogIn, Eye, EyeOff, UserPlus } from "lucide-react"
-import Link from "next/link"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { LogIn, Eye, EyeOff, UserPlus } from "lucide-react";
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
-export default function LoginStep({ data, updateData, onLogin, onForgotPassword }) {
-  const [errors, setErrors] = useState({})
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+export default function LoginStep({ data, updateData, onForgotPassword }) {
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors = {};
 
     if (!data.email.trim()) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-      newErrors.email = "Please enter a valid email address"
+      newErrors.email = "Please enter a valid email address";
     }
 
     if (!data.password) {
-      newErrors.password = "Password is required"
+      newErrors.password = "Password is required";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
+    setErrors({});
     try {
-      await onLogin(data.email, data.password, data.rememberMe)
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (res.error) {
+        setErrors({ general: res.error });
+      } else {
+        toast.success("Login successful! Redirecting.....");
+        window.location.href = "/pending"; // Redirect to pending page
+      }
     } catch (error) {
-      setErrors({ general: "Invalid email or password. Please try again." })
+      setErrors({ general: "Login failed. Please try again." });
+      toast.error("Login failed. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleInputChange = (field, value) => {
-    updateData({ [field]: value })
+    updateData({ [field]: value });
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }))
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
     if (errors.general) {
-      setErrors((prev) => ({ ...prev, general: "" }))
+      setErrors((prev) => ({ ...prev, general: "" }));
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -96,8 +111,6 @@ export default function LoginStep({ data, updateData, onLogin, onForgotPassword 
               onChange={(e) => handleInputChange("password", e.target.value)}
               placeholder="Enter your password"
               className={`bg-white text-gray-900 ${errors.password ? "border-red-500" : ""} pr-10`}
-
-              
               disabled={isLoading}
             />
             <Button
@@ -141,7 +154,7 @@ export default function LoginStep({ data, updateData, onLogin, onForgotPassword 
           </Button>
         </div>
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full bg-gradient-to-br from-green-400 to-emerald-500 text-white hover:opacity-90" disabled={isLoading}>
           {isLoading ? "Signing in..." : "Sign In"}
         </Button>
       </form>
@@ -159,5 +172,5 @@ export default function LoginStep({ data, updateData, onLogin, onForgotPassword 
         </p>
       </div>
     </div>
-  )
+  );
 }

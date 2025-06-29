@@ -1,16 +1,15 @@
-import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
 import User from "@/models/User";
-import OTP from "@/models/Otp";
 import { connectToDB } from "@/lib/connectDB";
+import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
-import { sendVerificationEmail } from "@/lib/mail/sendVerificationEmail";
-
+import { NextResponse } from "next/server";
+import EmailOtp from "@/models/EmailOtpSchema";
 
 export async function POST(req) {
   try {
     await connectToDB();
+    const body = await req.json();
 
     const {
       legalFirstName,
@@ -18,70 +17,86 @@ export async function POST(req) {
       legalLastName,
       username,
       email,
-      phone,
       country,
       accountType,
       transactionPin,
       password,
-    } = await req.json();
+    } = body;
 
+    // Validate required fields
     if (
       !legalFirstName ||
+      !middleName ||
       !legalLastName ||
       !username ||
       !email ||
-      !phone ||
       !country ||
       !accountType ||
       !transactionPin ||
       !password
     ) {
-      return NextResponse.json({ success: false, message: "All fields are required." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "All required fields must be filled." },
+        { status: 400 }
+      );
     }
 
-    // Check if user already exists
+    // Check for existing user
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
-      return NextResponse.json({ success: false, message: "Email or username already registered." }, { status: 409 });
+      return NextResponse.json(
+        { success: false, message: "Email or username already exists." },
+        { status: 409 }
+      );
     }
 
+    // Check if email is verified in EmailOtp
+    const otpRecord = await EmailOtp.findOne({ email });
+    if (!otpRecord || !otpRecord.verified) {
+      return NextResponse.json(
+        { success: false, message: "Email not verified. Please verify your email before registering." },
+        { status: 400 }
+      );
+    }
+
+    // Hash password and pin
     const hashedPassword = await bcrypt.hash(password, 10);
     const hashedPin = await bcrypt.hash(transactionPin, 10);
 
-    // Generate email verification token
+    // Generate verification token (for admin activation or future use)
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationTokenExpiry = Date.now() + 60 * 60 * 1000; // 1 hour
 
-    // Create user
+    // Create user with status inactive and isVerified true
     const user = await User.create({
-      userID: uuidv4(),
       legalFirstName,
       middleName,
       legalLastName,
       username,
       email,
-      phone,
       country,
       accountType,
       transactionPin: hashedPin,
       password: hashedPassword,
       role: "user",
-      isVerified: false,
+      isVerified: true, // Already verified via OTP
       verificationToken,
       verificationTokenExpiry,
+      status: "inactive", // Pending admin approval
     });
 
+    // Delete OTP record after successful registration
+    await EmailOtp.deleteOne({ email });
 
-   // Send verification email
-    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email/email-auth?verifyToken=${verificationToken}&id=${user._id}`;
-    await sendVerificationEmail({
-      to: user.email,
-      name: user.legalFirstName,
-      verificationUrl,
+    return NextResponse.json({
+      success: true,
+      message: "Registration successful! Your account is pending admin approval.",
+      userId: user._id,
     });
-
-    return NextResponse.json({ success: true, userId: user._id });
   } catch (error) {
-    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: error.message || "Registration failed." },
+      { status: 500 }
+    );
   }
 }

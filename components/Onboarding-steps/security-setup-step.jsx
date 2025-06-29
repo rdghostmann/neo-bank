@@ -162,7 +162,7 @@ export default function SecuritySetupStep({ data, updateData, onBack, onCreateAc
 
         {/* Buttons */}
         <div className="flex gap-3 pt-4">
-          <Button
+          {/* <Button
             type="button"
             variant="outline"
             onClick={onBack}
@@ -170,7 +170,7 @@ export default function SecuritySetupStep({ data, updateData, onBack, onCreateAc
             disabled={isLoading}
           >
             Back
-          </Button>
+          </Button> */}
           <Button
             type="submit"
             disabled={isLoading}

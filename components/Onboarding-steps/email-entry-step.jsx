@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Mail } from "lucide-react"
+import {toast} from "sonner"
 
 export default function EmailEntryStep({ data, updateData, onEmailSent }) {
   const [error, setError] = useState("")
@@ -30,12 +31,28 @@ export default function EmailEntryStep({ data, updateData, onEmailSent }) {
 
     setIsLoading(true)
     setError("")
+    toast.dismiss()
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: data.email }),
+      })
+      const result = await res.json()
+
+      if (!result.success) {
+        setError(result.message || "Failed to send verification code.")
+        toast.error(result.message || "Failed to send verification code.")
+        setIsLoading(false)
+        return
+      }
+
+      toast.success("Verification code sent to your email!")
       onEmailSent()
     } catch (err) {
       setError("Failed to send verification code. Please try again.")
+      toast.error("Failed to send verification code. Please try again.")
     } finally {
       setIsLoading(false)
     }

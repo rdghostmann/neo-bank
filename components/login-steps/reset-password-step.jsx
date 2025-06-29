@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Shield, Eye, EyeOff, RotateCcw } from "lucide-react"
+import { toast } from "sonner"
 
 export default function ResetPasswordStep({
   data,
@@ -18,22 +19,31 @@ export default function ResetPasswordStep({
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [canResend, setCanResend] = useState(false)
-  const [countdown, setCountdown] = useState(30)
+  const [countdown, setCountdown] = useState(60)
+  const [resendTrigger, setResendTrigger] = useState(0)
+  const [resending, setResending] = useState(false)
   const inputRefs = useRef([])
   const [codes, setCodes] = useState(["", "", "", "", "", ""])
 
+  // Countdown
   useEffect(() => {
-    const timer = setInterval(() => {
+  let timer
+  if (countdown > 0) {
+    timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
+          clearInterval(timer)
           setCanResend(true)
           return 0
         }
         return prev - 1
       })
     }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+  }
+
+  return () => clearInterval(timer)
+}, [resendTrigger])
+
 
   const handleCodeChange = (index, value) => {
     if (value.length > 1) return
@@ -79,11 +89,29 @@ export default function ResetPasswordStep({
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!validateForm()) return
+
     setIsLoading(true)
     try {
-      await onResetPassword()
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          otp: data.resetCode,
+          newPassword: data.newPassword,
+        }),
+      })
+
+      const result = await res.json()
+
+      if (res.ok) {
+        toast.success("Password reset successful! Please login.")
+        onResetPassword()
+      } else {
+        setErrors({ general: result.message || "Reset failed. Try again." })
+      }
     } catch (error) {
-      setErrors({ general: "Failed to reset password. Please try again." })
+      setErrors({ general: "Server error. Please try again." })
     } finally {
       setIsLoading(false)
     }
@@ -97,14 +125,43 @@ export default function ResetPasswordStep({
   }
 
   const handleResend = async () => {
-    setCanResend(false)
-    setCountdown(30)
-    await new Promise((resolve) => setTimeout(resolve, 500))
+  setResending(true)
+  try {
+    const res = await fetch("/api/auth/send-reset-otp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    })
+
+    const result = await res.json()
+
+    if (res.ok) {
+      toast.success("New OTP sent to your email")
+
+      // ⬇️ Reset everything
+      const emptyCodes = ["", "", "", "", "", ""]
+      setCodes(emptyCodes)
+      inputRefs.current[0]?.focus()
+      updateData({ resetCode: "" })
+      setErrors({})
+
+      // ⬇️ Restart countdown
+      setCountdown(60)
+      setCanResend(false)
+      setResendTrigger((prev) => prev + 1)
+    } else {
+      toast.error(result.message || "Failed to resend OTP")
+    }
+  } catch (error) {
+    toast.error("Network error. Please try again.")
+  } finally {
+    setResending(false)
   }
+}
+
 
   return (
     <div className="space-y-6">
-      {/* Header Icon and Title */}
       <div className="text-center space-y-2">
         <div className="relative mx-auto w-12 h-12 mb-4">
           <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center z-10 relative">
@@ -138,7 +195,9 @@ export default function ResetPasswordStep({
                 inputMode="numeric"
                 maxLength={1}
                 value={code}
-                onChange={(e) => handleCodeChange(index, e.target.value.replace(/\D/g, ""))}
+                onChange={(e) =>
+                  handleCodeChange(index, e.target.value.replace(/\D/g, ""))
+                }
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 className="w-12 h-12 text-center text-lg font-semibold bg-white text-gray-900 border border-gray-300 focus:border-green-500"
                 disabled={isLoading}
@@ -158,18 +217,23 @@ export default function ResetPasswordStep({
               variant="ghost"
               onClick={handleResend}
               className="text-sm text-green-600 hover:underline"
+              disabled={resending}
             >
               <RotateCcw className="w-4 h-4 mr-2" />
-              Resend Code
+              {resending ? "Sending..." : "Resend Code"}
             </Button>
           ) : (
-            <p className="text-sm text-muted-foreground">Resend code in {countdown}s</p>
+            <p className="text-sm text-muted-foreground">
+              Resend code in {countdown}s
+            </p>
           )}
         </div>
 
         {/* New Password */}
         <div className="space-y-2">
-          <Label htmlFor="newPassword" className="text-gray-900">New Password</Label>
+          <Label htmlFor="newPassword" className="text-gray-900">
+            New Password
+          </Label>
           <div className="relative">
             <Input
               id="newPassword"
@@ -177,7 +241,9 @@ export default function ResetPasswordStep({
               value={data.newPassword}
               onChange={(e) => handleInputChange("newPassword", e.target.value)}
               placeholder="Enter new password"
-              className={`pr-10 bg-white text-gray-900 ${errors.newPassword ? "border-red-500" : "border-gray-300 focus:border-green-500"}`}
+              className={`pr-10 bg-white text-gray-900 ${
+                errors.newPassword ? "border-red-500" : "border-gray-300 focus:border-green-500"
+              }`}
               disabled={isLoading}
             />
             <Button
@@ -202,16 +268,23 @@ export default function ResetPasswordStep({
 
         {/* Confirm Password */}
         <div className="space-y-2">
-          <Label htmlFor="confirmNewPassword" className="text-gray-900">Confirm New Password</Label>
+          <Label htmlFor="confirmNewPassword" className="text-gray-900">
+            Confirm New Password
+          </Label>
           <div className="relative">
             <Input
               id="confirmNewPassword"
               type={showConfirmPassword ? "text" : "password"}
               value={data.confirmNewPassword}
-              onChange={(e) => handleInputChange("confirmNewPassword", e.target.value)}
+              onChange={(e) =>
+                handleInputChange("confirmNewPassword", e.target.value)
+              }
               placeholder="Confirm new password"
-              className={`pr-10 bg-white text-gray-900 ${errors.confirmNewPassword ? "border-red-500" : "border-gray-300 focus:border-green-500"}`}
-              
+              className={`pr-10 bg-white text-gray-900 ${
+                errors.confirmNewPassword
+                  ? "border-red-500"
+                  : "border-gray-300 focus:border-green-500"
+              }`}
               disabled={isLoading}
             />
             <Button

@@ -5,28 +5,37 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Shield, RotateCcw } from "lucide-react"
+import { toast } from "sonner"
 
-export default function EmailVerificationStep({ data, updateData, onNext, email }) {
+export default function EmailVerificationStep({ data, updateData, onNext, email, onVerifyOtp }) {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [canResend, setCanResend] = useState(false)
   const [countdown, setCountdown] = useState(30)
   const inputRefs = useRef([])
+  const timerRef = useRef(null)
   const [codes, setCodes] = useState(["", "", "", "", "", ""])
 
-  useEffect(() => {
-    const timer = setInterval(() => {
+  const startCountdown = () => {
+    clearInterval(timerRef.current)
+    setCountdown(30)
+    setCanResend(false)
+    timerRef.current = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
+          clearInterval(timerRef.current)
           setCanResend(true)
           return 0
         }
         return prev - 1
       })
     }, 1000)
+  }
 
-    return () => clearInterval(timer)
-  }, [])
+  useEffect(() => {
+    startCountdown()
+    return () => clearInterval(timerRef.current)
+  }, [email])
 
   const handleCodeChange = (index, value) => {
     if (value.length > 1) return
@@ -39,10 +48,7 @@ export default function EmailVerificationStep({ data, updateData, onNext, email 
     updateData({ verificationCode: fullCode })
 
     if (error) setError("")
-
-    if (value && index < 5) {
-      inputRefs.current[index + 1]?.focus()
-    }
+    if (value && index < 5) inputRefs.current[index + 1]?.focus()
   }
 
   const handleKeyDown = (index, e) => {
@@ -53,7 +59,6 @@ export default function EmailVerificationStep({ data, updateData, onNext, email 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
     const fullCode = codes.join("")
     if (fullCode.length !== 6) {
       setError("Please enter the complete 6-digit code")
@@ -63,20 +68,37 @@ export default function EmailVerificationStep({ data, updateData, onNext, email 
     setIsLoading(true)
     setError("")
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+    const ok = await onVerifyOtp(fullCode)
+    if (ok) {
       onNext()
-    } catch (err) {
-      setError("Invalid verification code. Please try again.")
-    } finally {
-      setIsLoading(false)
+    } else {
+      setError("Invalid or expired verification code. Please try again.")
     }
+    setIsLoading(false)
   }
 
   const handleResend = async () => {
-    setCanResend(false)
-    setCountdown(30)
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    try {
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+      const result = await res.json()
+
+      if (!result.success) {
+        setError(result.message || "Failed to resend code.")
+        toast.error(result.message || "Failed to resend code.")
+      } else {
+        toast.success("A new verification code has been sent to your email.")
+        setCodes(["", "", "", "", "", ""])
+        setError("")
+        startCountdown()
+      }
+    } catch (err) {
+      setError("Failed to resend code. Please try again.")
+      toast.error("Failed to resend code. Please try again.")
+    }
   }
 
   return (

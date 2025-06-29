@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema(
     // Phone
     phone: {
       type: String,
-      required: [true, "Phone number is required"],
+      default: "",
     },
     // Country
     country: {
@@ -94,7 +94,14 @@ const UserSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["active", "inactive"],
-      default: "active",
+      default: "inactive",
+    },
+
+    otp: {
+      type: String,
+    },
+    otpExpiry: {
+      type: Date,
     },
     // Verification fields
     isVerified: {

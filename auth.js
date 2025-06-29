@@ -1,9 +1,9 @@
-//auth.js
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import User from "@/models/User";
-import bcrypt from "bcrypt";
-import { connectToDB } from "./lib/connectDB";
+// auth.js
+import NextAuth from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+import User from "@/models/User"
+import bcrypt from "bcrypt"
+import { connectToDB } from "./lib/connectDB"
 
 export const authOptions = {
   providers: [
@@ -15,35 +15,26 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        await connectToDB();
-        try {
-          const { email, password } = credentials;
+        await connectToDB()
+        const { email, password } = credentials
 
-          // Find user by email
-          const user = await User.findOne({ email }).select("+password");
+        const user = await User.findOne({ email }).select("+password +status +role +username")
+        if (!user || !user.password) {
+          throw new Error("Invalid credentials")
+        }
 
-          if (!user || !user.password) {
-            console.error("User not found or password missing");
-            throw new Error("Invalid credentials");
-          }
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if (!isPasswordValid) {
+          throw new Error("Invalid credentials")
+        }
 
-          // Compare passwords
-          const isPasswordValid = await bcrypt.compare(password, user.password);
-          if (!isPasswordValid) {
-            console.error("Invalid password attempt for email:", email);
-            throw new Error("Invalid credentials");
-          }
-
-          // Return user object
-          return {
-            id: user._id.toString(),
-            email: user.email,
-            username: user.username,
-            role: user.role,
-          };
-        } catch (error) {
-          console.error("AUTHORIZATION ERROR:", error.message);
-          throw error;
+        return {
+          id: user._id.toString(),
+          email: user.email,
+          username: user.username,
+          name: user.legalFirstName,
+          role: user.role,
+          status: user.status, // ✅ include status
         }
       },
     }),
@@ -55,34 +46,38 @@ export const authOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.username = user.username; // Ensure username is included
-        token.role = user.role; // Ensure role is included
+        token.id = user.id
+        token.email = user.email
+        token.username = user.username
+        token.role = user.role
+        token.name = user.name
+        token.status = user.status // ✅ attach status to token
       }
-      return token;
+      return token
     },
     async session({ session, token }) {
       session.user = {
         id: token.id,
         email: token.email,
         username: token.username,
-        role: token.role, // Critical for middleware
-      };
-      return session;
+        role: token.role,
+        name: token.name,
+        status: token.status, // ✅ pass status to session
+      }
+      return session
     },
-      async redirect({ url, baseUrl, user, token }) {
-      // Use token.role for redirect
-      if (token?.role === "admin") return "/admin";
-      if (token?.role === "user") return "/dashboard";
-      return baseUrl;
-    }
+    async redirect({ url, baseUrl, token }) {
+      if (token?.status === "inactive") return "/pending"
+      if (token?.role === "admin") return "/admin"
+      if (token?.role === "user") return "/dashboard"
+      return baseUrl
+    },
   },
   pages: {
     signIn: "/login",
     error: "/error",
   },
   secret: process.env.NEXTAUTH_SECRET,
-};
+}
 
-export default NextAuth(authOptions);
+export default NextAuth(authOptions)

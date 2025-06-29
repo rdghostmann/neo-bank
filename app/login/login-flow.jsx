@@ -7,6 +7,7 @@ import TwoFactorStep from "@/components/login-steps/two-factor-step";
 import ResetPasswordStep from "@/components/login-steps/reset-password-step";
 import ForgotPasswordStep from "@/components/login-steps/forgot-password-step";
 import LoginStep from "@/components/login-steps/login-step";
+import { toast } from "sonner";
 
 const initialData = {
   email: "",
@@ -28,36 +29,19 @@ export default function LoginFlow() {
     setFormData((prev) => ({ ...prev, ...data }));
   };
 
-  const handleLogin = async (email, password, rememberMe) => {
-    console.log("Logging in with:", { email, password, rememberMe });
-
-    if (email.includes("2fa")) {
-      setUserEmail(email);
-      setCurrentStep("two-factor");
-      return;
-    }
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    alert("Login successful! Redirecting to dashboard...");
-  };
-
   const handleForgotPassword = async (email) => {
     setUserEmail(email);
     updateFormData({ resetEmail: email });
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     setCurrentStep("reset-password");
   };
 
   const handleResetPassword = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    alert("Password reset successful! Please login with your new password.");
+    toast("Password reset successful! Please login with your new password.");
     setCurrentStep("login");
   };
 
   const handleTwoFactor = async (code) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    alert("Login successful! Redirecting to dashboard...");
+    toast("Login successful! Redirecting to dashboard...");
   };
 
   const renderStep = () => {
@@ -67,7 +51,6 @@ export default function LoginFlow() {
           <LoginStep
             data={formData}
             updateData={updateFormData}
-            onLogin={handleLogin}
             onForgotPassword={() => setCurrentStep("forgot-password")}
           />
         );
@@ -111,13 +94,9 @@ export default function LoginFlow() {
         <CardContent className="p-6 sm:p-8">
           <div className="flex items-center justify-center mb-6">
             <div className="relative">
-              {/* <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center">
-                <div className="w-4 h-4 bg-white rounded-full" />
-              </div> */}
               <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl blur-lg opacity-30" />
             </div>
           </div>
-
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
