@@ -1,0 +1,52 @@
+"use client";
+
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Users } from "lucide-react";
+
+const mockUsers = [
+  { id: "1", name: "John Snow", email: "john@example.com", isActive: true },
+  { id: "2", name: "Jane Smith", email: "jane@example.com", isActive: false },
+  { id: "3", name: "Mike Johnson", email: "mike@example.com", isActive: true },
+  { id: "4", name: "Sarah Wilson", email: "sarah@example.com", isActive: true },
+  { id: "5", name: "David Brown", email: "david@example.com", isActive: false },
+  { id: "6", name: "Lisa Davis", email: "lisa@example.com", isActive: true },
+];
+
+export default function AdminDashboard() {
+  const [users, setUsers] = useState(mockUsers);
+
+  const toggleUserStatus = (userId) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId ? { ...user, isActive: !user.isActive } : user
+      )
+    );
+  };
+
+  const activeCount = users.filter((user) => user.isActive).length;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-6">
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800 flex items-center gap-2">
+              <Users className="w-7 h-7 text-green-600" />
+              Admin Dashboard
+            </h1>
+            <p className="text-slate-600">Manage user accounts and status</p>
+          </div>
+          <Badge className="bg-green-100 text-green-700 border border-green-200 shadow-sm">
+            {activeCount} Active Users
+          </Badge>
+        </div>
+
+    
+      </div>
+    </div>
+  );
+}

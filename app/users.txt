@@ -1,0 +1,6 @@
+Seeding complete! Users have been seeded.
+
+Seeded Users:
+ID: 68480e3407389e6afc4477a6 | Username: RegularUser1 | Email: user1@seedexample.com | Role: user
+ID: 68480e3407389e6afc4477a7 | Username: RegularUser2 | Email: user2@seedexample.com | Role: user
+ID: 68480e3407389e6afc4477a8 | Username: RegularUser3 | Email: user3@seedexample.com | Role: user
