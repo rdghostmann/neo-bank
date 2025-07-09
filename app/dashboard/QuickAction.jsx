@@ -1,223 +1,129 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import {
-    Plus,
-    Send,
-    Smartphone,
-    Wifi,
-    XCircle,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Plus, Send, Smartphone, Wifi, X } from "lucide-react"
+import BankTransfer from "./components/TransferAction"
+import DepositAction from "./components/DepositAction"
+import MobilePayAction from "./components/MobilePayAction"
+import PayBillsAction from "./components/PayBillsAction"
 
 const QuickAction = () => {
-    const [openAction, setOpenAction] = useState(null); // 'transfer' | 'paybill' | null
-    const [formData, setFormData] = useState({
-        accountName: "",
-        accountNumber: "",
-        amount: "",
-        description: "",
-        category: "",
-        account: "",
-    });
+  const [openAction, setOpenAction] = useState(null)
 
-    const quickActions = [
-        {
-            icon: Send,
-            label: "Transfer",
-            color: "from-blue-500 to-blue-600",
-            bgColor: "bg-blue-50",
-            onClick: () => setOpenAction("transfer"),
-        },
-        {
-            icon: Plus,
-            label: "Deposit",
-            color: "from-green-500 to-green-600",
-            bgColor: "bg-green-50",
-            onClick: () => toast("Deposit feature coming soon!", { description: "Stay tuned" }),
-        },
-        {
-            icon: Smartphone,
-            label: "Mobile Pay",
-            color: "from-purple-500 to-purple-600",
-            bgColor: "bg-purple-50",
-            onClick: () => toast("Mobile Pay feature coming soon!", { description: "Coming in future update" }),
-        }
-        ,
-        {
-            icon: Wifi,
-            label: "Pay Bills",
-            color: "from-orange-500 to-orange-600",
-            bgColor: "bg-orange-50",
-            onClick: () => setOpenAction("paybill"),
-        },
-    ];
+  const quickActions = [
+    {
+      icon: Send,
+      label: "Transfer",
+      color: "from-blue-500 to-blue-600",
+      bgColor: "bg-blue-50",
+      onClick: () => setOpenAction("transfer"),
+    },
+    {
+      icon: Plus,
+      label: "Deposit",
+      color: "from-green-500 to-green-600",
+      bgColor: "bg-green-50",
+      onClick: () => setOpenAction("deposit"),
+    },
+    {
+      icon: Smartphone,
+      label: "Mobile Pay",
+      color: "from-purple-500 to-purple-600",
+      bgColor: "bg-purple-50",
+      onClick: () => setOpenAction("mobilepay"),
+    },
+    {
+      icon: Wifi,
+      label: "Pay Bills",
+      color: "from-orange-500 to-orange-600",
+      bgColor: "bg-orange-50",
+      onClick: () => setOpenAction("paybill"),
+    },
+  ]
 
-    const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+  const renderActionComponent = () => {
+    switch (openAction) {
+      case "transfer":
+        return <BankTransfer onClose={() => setOpenAction(null)} />
+      case "deposit":
+        return <DepositAction onClose={() => setOpenAction(null)} />
+      case "mobilepay":
+        return <MobilePayAction onClose={() => setOpenAction(null)} />
+      case "paybill":
+        return <PayBillsAction onClose={() => setOpenAction(null)} />
+      default:
+        return null
+    }
+  }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const payload = {
-            ...formData,
-            amount: parseFloat(formData.amount),
-            type: "debit",
-            date: new Date(),
-            time: new Date().toLocaleTimeString(),
-            reference: `TXN-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
-            status: "completed",
-            avatar: openAction === "transfer" ? "💳" : "⚡",
-        };
-
-        console.log("Submitted Transaction:", payload);
-
-        // Reset
-        setFormData({
-            accountName: "",
-            accountNumber: "",
-            amount: "",
-            description: "",
-            category: "",
-            account: "",
-        });
-        setOpenAction(null);
-    };
-
-    return (
-        <>
-            {/* Quick Action Grid */}
+  return (
+    <>
+      {/* Quick Action Grid */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="space-y-4"
+      >
+        <h2 className="text-xl font-bold text-slate-800">Quick Actions</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {quickActions.map((action, index) => (
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="space-y-4"
+              key={index}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`flex flex-col items-center p-6 rounded-2xl ${action.bgColor} border border-white/50 cursor-pointer hover:shadow-lg transition-all duration-200`}
+              onClick={action.onClick}
             >
-                <h2 className="text-xl font-bold text-slate-800">Quick Actions</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {quickActions.map((action, index) => (
-                        <motion.div
-                            key={index}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className={`flex flex-col items-center p-6 rounded-2xl ${action.bgColor} border border-white/50 cursor-pointer hover:shadow-lg transition-all duration-200`}
-                            onClick={action.onClick}
-                        >
-                            <div
-                                className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${action.color} flex items-center justify-center mb-3 shadow-lg`}
-                            >
-                                <action.icon className="w-7 h-7 text-white" />
-                            </div>
-                            <span className="text-sm font-semibold text-slate-700">
-                                {action.label}
-                            </span>
-                        </motion.div>
-                    ))}
-                </div>
+              <div
+                className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${action.color} flex items-center justify-center mb-3 shadow-lg`}
+              >
+                <action.icon className="w-7 h-7 text-white" />
+              </div>
+              <span className="text-sm font-semibold text-slate-700">{action.label}</span>
             </motion.div>
+          ))}
+        </div>
+      </motion.div>
 
-            {/* Modal Overlay */}
-            {openAction && (
-                <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
-                    <div className="bg-white w-full max-w-md rounded-xl p-6 space-y-4 relative">
-                        {/* Close Button */}
-                        <button
-                            onClick={() => setOpenAction(null)}
-                            className="absolute right-4 top-4 text-red-500 hover:text-red-600"
-                        >
-                            <XCircle className="w-6 h-6" />
-                        </button>
+      {/* Modal Overlay */}
+      <AnimatePresence>
+        {openAction && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center p-4"
+            onClick={() => setOpenAction(null)}
+          >
+            <motion.div
+              key={openAction}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white text-gray-900 w-full max-w-md max-h-[90vh] overflow-hidden rounded-t-3xl sm:rounded-3xl relative shadow-lg"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setOpenAction(null)}
+                className="absolute right-4 top-4 z-10 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-600" />
+              </button>
 
-                        <h2 className="text-xl font-bold text-slate-800">
-                            {openAction === "transfer" ? "New Transfer" : "Pay a Bill"}
-                        </h2>
+              {/* Scrollable Modal Content */}
+              <div className="pt-4 px-4 pb-6 overflow-y-auto max-h-[calc(90vh-60px)]">
+                {renderActionComponent()}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  )
+}
 
-                        {/* Form */}
-                        <form className="space-y-4" onSubmit={handleSubmit}>
-                            <div>
-                                <Label htmlFor="accountName" className="mb-3 text-gray-700">Account Name</Label>
-                                <Input
-                                    id="accountName"
-                                    name="accountName"
-                                    value={formData.accountName}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="text-gray-700 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="accountNumber" className="mb-3 text-gray-700">Account Number</Label>
-                                <Input
-                                    id="accountNumber"
-                                    name="accountNumber"
-                                    value={formData.accountNumber}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="text-gray-700 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="amount" className="mb-3 text-gray-700">Amount</Label>
-                                <Input
-                                    id="amount"
-                                    name="amount"
-                                    type="number"
-                                    value={formData.amount}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="text-gray-700 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="description" className="mb-3 text-gray-700">Description</Label>
-                                <Input
-                                    id="description"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="text-gray-700 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="category" className="mb-3 text-gray-700">Category</Label>
-                                <Input
-                                    id="category"
-                                    name="category"
-                                    value={formData.category}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="text-gray-700 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
-                                />
-                            </div>
-                            <div>
-                                <Label htmlFor="account" className="mb-3 text-gray-700">Account Type</Label>
-                                <Input
-                                    id="account"
-                                    name="account"
-                                    value={formData.account}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="text-gray-700 border border-gray-700 focus:border-blue-500 focus:ring-blue-500 focus:ring-1"
-                                />
-                            </div>
-
-                            <Button type="submit" className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 text-white">
-                                {openAction === "transfer" ? "Send Transfer" : "Pay Bill"}
-                            </Button>
-                        </form>
-
-                    </div>
-                </div>
-            )}
-        </>
-    );
-};
-
-export default QuickAction;
+export default QuickAction

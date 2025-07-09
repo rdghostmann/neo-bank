@@ -8,10 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
-
 const RecentActivityCard = ({ recentActivity }) => {
-    console.log(recentActivity);
-
     return (
         <Card>
             <CardHeader>
@@ -29,23 +26,22 @@ const RecentActivityCard = ({ recentActivity }) => {
                         className="flex items-center gap-3 p-2 rounded-lg hover:bg-accent"
                     >
                         <Avatar className="w-8 h-8">
-                            <AvatarImage src={activity.avatar || "/placeholder.svg"} />
+                            <AvatarImage src={activity.user?.avatar || "/placeholder.svg"} />
                             <AvatarFallback>
-                                {activity.user
-                                    ? `${activity.user?.firstName} ${activity.user?.lastName}`
-                                        .trim()
+                                {activity.user?.username
+                                    ? activity.user.username
                                         .split(" ")
-                                        .map((name) => name[0])
+                                        .map((n) => n[0])
                                         .join("")
-                                    : "?"}
+                                    : "U"}
                             </AvatarFallback>
-
-                            {/* <p>{activity.user?.firstName} {activity.user?.lastName}</p> */}
-
                         </Avatar>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium">{activity.user}</p>
+                            <p className="text-sm font-medium">
+                                {activity.user?.username || "Unknown User"}
+                            </p>
                             <p className="text-xs text-muted-foreground">{activity.title}</p>
+                            <p className="text-xs text-muted-foreground">{activity.message}</p>
                         </div>
                         <div className="text-right">
                             <Badge
@@ -73,5 +69,4 @@ const RecentActivityCard = ({ recentActivity }) => {
         </Card>
     )
 }
-
 export default RecentActivityCard

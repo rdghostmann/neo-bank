@@ -256,11 +256,12 @@ export default function AdminDashboard({ recentActivity, recentCustomers }) {
                     <Avatar>
                       <AvatarImage src={customer.avatar || "/placeholder.svg"} />
                       <AvatarFallback>
-                        {(customer.name ?? "")
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-
+                        {customer.username
+                          ? customer.username
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")
+                          : "U"}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
