@@ -1,8 +1,6 @@
 "use client"
 
-import  React from "react"
-
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -17,14 +15,13 @@ export default function IMFVerification() {
   const [transferData, setTransferData] = useState(null)
 
   useEffect(() => {
-    // Get transfer data from localStorage
     const storedTransfer = localStorage.getItem("pendingTransfer")
     if (storedTransfer) {
       setTransferData(JSON.parse(storedTransfer))
     }
   }, [])
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (!imfCode.trim()) {
@@ -41,15 +38,10 @@ export default function IMFVerification() {
     setError("")
 
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      // Clear pending transfer
       localStorage.removeItem("pendingTransfer")
-
-      // Redirect to success page or dashboard
       window.location.href = "/transfer-success"
-    } catch (err) {
+    } catch {
       setError("Invalid IMF Code. Please try again.")
     } finally {
       setIsLoading(false)
@@ -71,7 +63,7 @@ export default function IMFVerification() {
       <div className="bg-white border-b border-gray-200 px-4 py-4">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" onClick={handleBack} className="p-2">
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 text-gray-700" />
           </Button>
           <h1 className="text-lg font-semibold text-gray-900">Transfer Verification</h1>
         </div>
@@ -99,7 +91,7 @@ export default function IMFVerification() {
         {/* Transfer Summary */}
         {transferData && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-            <Card className="mb-6">
+            <Card className="bg-white border border-gray-200 mb-6">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -111,7 +103,7 @@ export default function IMFVerification() {
                   </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-3 text-gray-800">
                   <div className="flex justify-between">
                     <span className="text-gray-600">To:</span>
                     <span className="font-medium">{transferData.recipientName}</span>
@@ -132,7 +124,7 @@ export default function IMFVerification() {
 
         {/* IMF Code Form */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <Card>
+          <Card className="bg-white border border-gray-200">
             <CardContent className="p-6">
               <div className="text-center mb-6">
                 <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -146,7 +138,7 @@ export default function IMFVerification() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <Label htmlFor="imfCode" className="text-base font-medium">
+                  <Label htmlFor="imfCode" className="text-base font-medium text-gray-800">
                     IMF Verification Code *
                   </Label>
                   <Input
@@ -164,7 +156,7 @@ export default function IMFVerification() {
                   />
                   {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
                   <p className="text-xs text-gray-500 mt-2">
-                    The IMF code is typically 8-12 characters long and may contain letters and numbers.
+                    The IMF code is typically 8–12 characters long and may contain letters and numbers.
                   </p>
                 </div>
 
@@ -180,11 +172,10 @@ export default function IMFVerification() {
                 </Button>
               </form>
 
-              {/* Help Text */}
-              <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">Need help?</h4>
-                <p className="text-sm text-blue-800 leading-relaxed">
-                  If you haven't received your IMF code, please contact your bank's international transfer department or
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg text-blue-900">
+                <h4 className="font-medium mb-2">Need help?</h4>
+                <p className="text-sm leading-relaxed">
+                  If you haven’t received your IMF code, please contact your bank’s international transfer department or
                   customer service for assistance.
                 </p>
               </div>
@@ -197,7 +188,7 @@ export default function IMFVerification() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-6 p-4 bg-gray-100 rounded-lg"
+          className="mt-6 p-4 bg-gray-100 rounded-lg text-gray-800"
         >
           <div className="flex items-start gap-3">
             <Shield className="w-5 h-5 text-gray-600 flex-shrink-0 mt-0.5" />
