@@ -7,6 +7,10 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { AlertTriangle, ArrowLeft, Shield } from "lucide-react"
 import { motion } from "framer-motion"
+import { verifyMifCode } from "@/controllers/mifCode"
+import { toast } from "sonner"
+// ...rest of your code...
+// import { verifyMifCode } from "@/controllers/mifCode"
 
 export default function IMFVerification() {
   const [imfCode, setImfCode] = useState("")
@@ -22,31 +26,50 @@ export default function IMFVerification() {
   }, [])
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!imfCode.trim()) {
-      setError("IMF Code is required")
-      return
+      setError("IMF Code is required");
+      return;
     }
 
     if (imfCode.length < 8) {
-      setError("IMF Code must be at least 8 characters")
-      return
+      setError("IMF Code must be at least 8 characters");
+      return;
     }
 
-    setIsLoading(true)
-    setError("")
+    setIsLoading(true);
+    setError("");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      localStorage.removeItem("pendingTransfer")
-      window.location.href = "/transfer-success"
+      // Get userId from transferData
+      const userId = transferData?.userId;
+      if (!userId) {
+        setError("User not found for this transfer.");
+        setIsLoading(false);
+        return;
+      }
+      const result = await verifyMifCode(userId, imfCode);
+      if (result.success) {
+        // Save the completed transaction to localStorage for TransactionStatus page
+        localStorage.setItem("lastTransaction", JSON.stringify({
+          ...transferData,
+          status: "success",
+          timestamp: new Date().toISOString(),
+          type: transferData.type || "transfer",
+        }));
+        localStorage.removeItem("pendingTransfer");
+        window.location.href = "/dashboard/transaction-status";
+        toast.success("Redirecting!");
+      } else {
+        setError(result.message || "Invalid IMF Code. Please try again.");
+      }
     } catch {
-      setError("Invalid IMF Code. Please try again.")
+      setError("Verification failed. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleBack = () => {
     window.history.back()
@@ -115,6 +138,7 @@ export default function IMFVerification() {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Reference:</span>
                     <span className="font-mono text-sm">{transferData.reference}</span>
+
                   </div>
                 </div>
               </CardContent>
@@ -150,14 +174,16 @@ export default function IMFVerification() {
                       if (error) setError("")
                     }}
                     placeholder="Enter IMF code (e.g., IMF123456)"
-                    className={`mt-2 text-center text-lg font-mono tracking-wider ${error ? "border-red-500" : ""}`}
+                    className={`mt-2 text-center text-lg font-mono tracking-wider text-gray-900 ${error ? "border-red-500" : ""}`}
                     disabled={isLoading}
                     maxLength={20}
                   />
                   {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+
                   <p className="text-xs text-gray-500 mt-2">
                     The IMF code is typically 8–12 characters long and may contain letters and numbers.
                   </p>
+
                 </div>
 
                 <Button type="submit" className="w-full mt-6 bg-blue-600 hover:bg-blue-700" disabled={isLoading}>

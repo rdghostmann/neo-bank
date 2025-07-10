@@ -10,8 +10,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useSession } from "next-auth/react"
+import { generateAndSaveMifCode } from "@/controllers/generateAndSaveMifCode"
 
 const TransferAction = ({ onClose }) => {
+  const { data: session } = useSession()
+  const userId = session?.user?.id // or session?.user?._id depending on your session shape
+
   const [currentStep, setCurrentStep] = useState(1)
   const [showPin, setShowPin] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -45,6 +50,8 @@ const TransferAction = ({ onClose }) => {
     { value: "express", label: "Express Transfer (Same day)", fee: "$5.00" },
     { value: "instant", label: "Instant Transfer (Within minutes)", fee: "$10.00" },
   ]
+
+  
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -91,11 +98,20 @@ const TransferAction = ({ onClose }) => {
     setCurrentStep((prev) => prev - 1)
   }
 
-  const handleSubmit = async () => {
+ const handleSubmit = async () => {
     if (!validateStep(3)) return
 
     setIsLoading(true)
     await new Promise((resolve) => setTimeout(resolve, 2000))
+
+    if (!userId) {
+      setIsLoading(false)
+      setError("User not found. Please log in again.")
+      return
+    }
+
+    // Generate and save MIF code for this user
+    const mifCode = await generateAndSaveMifCode(userId)
 
     // Store transfer data in localStorage for IMF verification
     const transferData = {
@@ -103,15 +119,16 @@ const TransferAction = ({ onClose }) => {
       reference: `TXN-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
       timestamp: new Date().toISOString(),
       status: "pending_imf",
+      userId: userId, // Save userId for verification step
+      type: "transfer",
     }
 
     localStorage.setItem("pendingTransfer", JSON.stringify(transferData))
 
     setIsLoading(false)
 
-    // Close modal and redirect to IMF verification
     if (onClose) onClose()
-    window.location.href = "dashboard/imf-verification" 
+    window.location.href = "dashboard/imf-verification"
   }
 
   const formatAmount = (amount) => {

@@ -108,6 +108,7 @@ const UserSchema = new mongoose.Schema(
     otpExpiry: {
       type: Date,
     },
+    mifCode: { type: String },
     // Verification fields
     isVerified: {
       type: Boolean,
@@ -123,6 +124,7 @@ const UserSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
+  
 );
 
 const User = mongoose.models?.User || mongoose.model("User", UserSchema);
